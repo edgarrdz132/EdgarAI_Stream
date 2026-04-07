@@ -6,7 +6,6 @@ import { useAuthStore } from '@/store/authStore'
 import LoadingScreen from '@/components/ui/LoadingScreen'
 
 const HomePage        = lazy(() => import('@/pages/HomePage'))
-const CategoryPage    = lazy(() => import('@/pages/CategoryPage'))
 const PlayerPage      = lazy(() => import('@/pages/PlayerPage'))
 const SearchPage      = lazy(() => import('@/pages/SearchPage'))
 const ProfilePage     = lazy(() => import('@/pages/ProfilePage'))
@@ -40,7 +39,6 @@ export default function App() {
           <Route path="anime" element={<AnimePage />} />
           <Route path="telenovelas" element={<TelenovelasPage />} />
           <Route path="caricaturas" element={<CaricaturasPage />} />
-          <Route path="category/:slug" element={<CategoryPage />} />
           <Route path="watch/:channelId" element={<PlayerPage />} />
           <Route path="search" element={<SearchPage />} />
           <Route path="profile" element={
