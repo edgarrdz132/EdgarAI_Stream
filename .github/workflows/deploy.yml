@@ -20,8 +20,16 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Check env vars
+        run: |
+          echo "SUPABASE_URL is set: ${{ secrets.VITE_SUPABASE_URL != '' }}"
+          echo "ANON_KEY is set: ${{ secrets.VITE_SUPABASE_ANON_KEY != '' }}"
+
       - name: Build
         run: npm run build
+        env:
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
