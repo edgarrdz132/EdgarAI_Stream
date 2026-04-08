@@ -137,18 +137,21 @@ function LiveSection() {
         </div>
       ) : (
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '0.75rem' }}>
-          {filtered.map(ch => (
-            <ChannelCard
-              key={ch.nanoid}
-              channel={{
-                id: ch.nanoid,
-                name: ch.name,
-                stream_url: ch.stream_urls?.[0],
-                thumbnail_url: null,
-              }}
-            />
-          ))}
-        </div>
+         {filtered.slice(0, 12).map(ch => (
+	   <ChannelCard
+	    key={ch.nanoid}
+	    channel={{
+	      id: ch.nanoid,
+	      nombre: ch.name,
+	      estado: 'activo',
+	      stream_url: ch.stream_urls?.[0],
+	      thumbnail: null,
+	      categoria: categorizeChannel(ch.name),
+	      idioma: ch.languages?.[0] || 'es',
+	    }}
+	  />
+	))}
+      </div>
       )}
     </div>
   )
