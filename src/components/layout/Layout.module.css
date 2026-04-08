@@ -52,7 +52,7 @@
   font-size: 22px;
   letter-spacing: 0.12em;
 }
-.logoAccent { color: var(--accent-primary); }
+.logoAccent { background: linear-gradient(90deg, #fff, #e50914); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
 
 /* Nav links */
 .navLinks {

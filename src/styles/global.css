@@ -5,15 +5,15 @@
 
 :root {
   /* Core palette */
-  --bg-void:      #05050a;
-  --bg-deep:      #0a0a12;
-  --bg-surface:   #111120;
-  --bg-elevated:  #181828;
+  --bg-void:      #080808;
+  --bg-deep:      #0f0f0f;
+  --bg-surface:   #141414;
+  --bg-elevated:  #1a1a1a;
   --bg-overlay:   #1e1e32;
 
   /* Accent — electric indigo + crimson */
-  --accent-primary: #6c63ff;
-  --accent-glow:    #8b83ff;
+  --accent-primary: #e50914;
+  --accent-glow:    #b20710;
   --accent-hot:     #ff3860;
   --accent-hot-dim: #cc2d4d;
   --accent-gold:    #f5c842;
@@ -57,7 +57,7 @@
 
   /* Fonts */
   --font-display: 'Bebas Neue', 'Impact', sans-serif;
-  --font-body:    'DM Sans', system-ui, sans-serif;
+  --font-body:    'Barlow Condensed', system-ui, sans-serif;
   --font-mono:    'JetBrains Mono', 'Courier New', monospace;
 }
 
