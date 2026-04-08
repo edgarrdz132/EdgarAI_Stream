@@ -20,9 +20,13 @@ export default function ChannelCard({ channel, index = 0 }) {
   const accent = CATEGORY_COLORS[channel.categoria] || '#6c63ff'
   const isLive  = channel.estado === 'activo'
 
-  const handleClick = () => {
+const handleClick = () => {
+  if (channel.stream_url) {
+    navigate(`/watch/${channel.id}?stream=${encodeURIComponent(channel.stream_url)}&nombre=${encodeURIComponent(channel.nombre || channel.name || '')}`)
+  } else {
     navigate(`/watch/${channel.id}`)
   }
+}
 
   return (
     <div
