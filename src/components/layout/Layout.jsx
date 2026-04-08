@@ -65,7 +65,8 @@ export default function Layout() {
                 onError={e => { e.target.parentElement.innerHTML = '🎭' }} />
             </div>
             <span className={styles.logoText}>
-              EDGAR<span className={styles.logoAccent}>AI</span>
+              <span style={{ display: 'block', lineHeight: 1 }}>EDGAR<span className={styles.logoAccent}>AI</span></span>
+              <span style={{ display: 'block', lineHeight: 1, fontSize: '0.6em', letterSpacing: 4, color: 'rgba(255,255,255,0.7)' }}>STREAM</span>
             </span>
           </Link>
 
