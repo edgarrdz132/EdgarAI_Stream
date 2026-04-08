@@ -139,7 +139,7 @@ export default function EnVivoPage() {
              estado: 'activo',
              stream_url: ch.stream_urls?.[0],
 	     thumbnail: null,
-	     categoria: categorizeChannel(ch.name)
+	     categoria: categorizeChannel(ch.name),
              idioma: ch.languages?.[0] || 'es',
            }}
           />			
