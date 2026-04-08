@@ -64,10 +64,10 @@ export default function Layout() {
               <img src={EDGAR_IMG} alt="EdgarAI" style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                 onError={e => { e.target.parentElement.innerHTML = '🎭' }} />
             </div>
-            <span className={styles.logoText}>
-              <span style={{ display: 'block', lineHeight: 1 }}>EDGAR<span className={styles.logoAccent}>AI</span></span>
-              <span style={{ display: 'block', lineHeight: 1, fontSize: '0.6em', letterSpacing: 4, color: 'rgba(255,255,255,0.7)' }}>STREAM</span>
-            </span>
+              <span className={styles.logoText}>
+ 		 <span style={{ display: 'block', lineHeight: 1 }}>EDGAR<span className={styles.logoAccent}>AI</span></span>
+ 		 <span style={{ display: 'block', lineHeight: 1.2, fontSize: '11px', letterSpacing: 6, color: 'rgba(255,255,255,0.45)', fontFamily: 'monospace' }}>STREAM</span>
+		</span>
           </Link>
 
           {/* Desktop nav */}
