@@ -1,147 +1,77 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
-import { useQuery } from 'react-query'
 import { ArrowLeft, AlertCircle } from 'lucide-react'
-import { channelsAPI } from '@/services/api'
+import { canalesAPI } from '@/services/supabase'
 import VideoPlayer from '@/components/player/VideoPlayer'
-import ChannelCard from '@/components/cards/ChannelCard'
-import styles from './PlayerPage.module.css'
 
 export default function PlayerPage() {
   const { channelId } = useParams()
   const navigate = useNavigate()
+  const [channel, setChannel] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(false)
 
-  const { data: channel, isLoading, error } = useQuery(
-    ['channel', channelId],
-    () => channelsAPI.getById(channelId).then(r => r.data),
-    { retry: 2 }
+  useEffect(() => {
+    canalesAPI.getById(channelId).then(({ data, error }) => {
+      if (error || !data) setError(true)
+      else setChannel(data)
+      setLoading(false)
+    })
+  }, [channelId])
+
+  if (loading) return (
+    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh', color: '#888' }}>
+      Cargando...
+    </div>
   )
 
-  const { data: streamData } = useQuery(
-    ['stream', channelId],
-    () => channelsAPI.getStreamUrl(channelId).then(r => r.data),
-    { enabled: !!channel, retry: 1 }
-  )
-
-  const { data: related } = useQuery(
-    ['related', channel?.categoria],
-    () => channelsAPI.getByCategory(channel?.categoria, { limit: 8 }).then(r => r.data),
-    { enabled: !!channel?.categoria }
-  )
-
-  if (isLoading) return <PlayerSkeleton />
-
-  if (error) return (
-    <div className={styles.errorPage}>
-      <AlertCircle size={64} className={styles.errorIcon} />
+  if (error || !channel) return (
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100vh', gap: '1rem' }}>
+      <AlertCircle size={64} style={{ color: '#e50914' }} />
       <h2>Canal no encontrado</h2>
-      <p>No pudimos encontrar el canal solicitado.</p>
-      <button onClick={() => navigate('/')} className={styles.backBtn}>
+      <button onClick={() => navigate('/')} style={{ background: '#e50914', color: '#fff', border: 'none', borderRadius: 4, padding: '0.65rem 1.5rem', cursor: 'pointer', fontWeight: 700 }}>
         Volver al inicio
       </button>
     </div>
   )
 
   return (
-    <div className={styles.page}>
-      {/* Back nav */}
-      <div className={styles.topNav}>
-        <button className={styles.backLink} onClick={() => navigate(-1)}>
-          <ArrowLeft size={18} />
-          <span>Volver</span>
+    <div style={{ padding: '1.5rem 2.5rem' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem' }}>
+        <button onClick={() => navigate(-1)} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)', borderRadius: 4, padding: '0.5rem 1rem', color: '#fff', cursor: 'pointer' }}>
+          <ArrowLeft size={18} /> Volver
         </button>
-        <div className={styles.breadcrumb}>
-          <Link to="/">Inicio</Link>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.8rem', color: '#888' }}>
+          <Link to="/" style={{ color: '#888' }}>Inicio</Link>
           <span>/</span>
-          <Link to={`/category/${channel?.categoria}`}>{channel?.categoria}</Link>
+          <Link to={`/category/${channel.categoria}`} style={{ color: '#888' }}>{channel.categoria}</Link>
           <span>/</span>
-          <span className={styles.breadcrumbCurrent}>{channel?.nombre}</span>
+          <span style={{ color: '#fff' }}>{channel.nombre}</span>
         </div>
       </div>
 
-      <div className={styles.layout}>
-        {/* Main player column */}
-        <div className={styles.mainCol}>
-          {/* Player */}
-          <div className={styles.playerWrap}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 320px', gap: '1.5rem' }}>
+        <div>
+          <div style={{ borderRadius: 12, overflow: 'hidden', background: '#000' }}>
             <VideoPlayer
-              streamUrl={streamData?.url || channel?.url_stream}
-              fallbackUrls={streamData?.fallbacks || []}
-              channelName={channel?.nombre}
+              streamUrl={`http://localhost:5000/api/proxy/stream?cid=${channel.id}`}
+              channelName={channel.nombre}
             />
           </div>
 
-          {/* Channel info */}
-          <div className={styles.channelInfo}>
-            <div className={styles.infoHeader}>
-              <div>
-                <h1 className={`${styles.channelName} display-title`}>{channel?.nombre}</h1>
-                <div className={styles.metaRow}>
-                  {channel?.estado === 'activo'
-                    ? <span className="badge badge-live">EN VIVO</span>
-                    : <span className="badge" style={{background:'rgba(255,255,255,0.08)', color:'var(--text-muted)'}}>OFFLINE</span>
-                  }
-                  <span className={styles.metaItem}>{channel?.categoria}</span>
-                  {channel?.idioma && (
-                    <span className={styles.metaItem}>{channel.idioma.toUpperCase()}</span>
-                  )}
-                  {channel?.subtitulos_disponibles && (
-                    <span className={`${styles.metaItem} ${styles.subTag}`}>Subtítulos ES</span>
-                  )}
-                </div>
-              </div>
-
-              <div className={styles.qualityBadge}>
-                <span>HD</span>
-                <small>CALIDAD</small>
-              </div>
-            </div>
-
-            {channel?.descripcion && (
-              <p className={styles.description}>{channel.descripcion}</p>
-            )}
-
-            {/* Last verified */}
-            {channel?.ultima_verificacion && (
-              <p className={styles.verified}>
-                Verificado: {new Date(channel.ultima_verificacion).toLocaleString('es-MX')}
-              </p>
-            )}
-          </div>
-        </div>
-
-        {/* Sidebar - related */}
-        {related?.channels?.length > 0 && (
-          <aside className={styles.sidebar}>
-            <h2 className={`${styles.sidebarTitle} display-title`}>Canales relacionados</h2>
-            <div className={styles.relatedList}>
-              {related.channels
-                .filter(c => c.id !== channelId)
-                .slice(0, 6)
-                .map((ch, i) => (
-                  <ChannelCard key={ch.id} channel={ch} index={i} />
-                ))
+          <div style={{ padding: '1.5rem 0' }}>
+            <h1 style={{ fontFamily: 'Bebas Neue, sans-serif', fontSize: '2rem', letterSpacing: 2, marginBottom: '0.5rem' }}>{channel.nombre}</h1>
+            <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', marginBottom: '1rem' }}>
+              {channel.estado === 'activo'
+                ? <span style={{ background: 'rgba(255,56,96,0.2)', color: '#ff3860', border: '1px solid rgba(255,56,96,0.4)', borderRadius: 100, padding: '3px 10px', fontSize: 11, fontWeight: 600 }}>● EN VIVO</span>
+                : <span style={{ background: 'rgba(255,255,255,0.08)', color: '#888', borderRadius: 100, padding: '3px 10px', fontSize: 11 }}>OFFLINE</span>
               }
+              <span style={{ color: '#888', fontSize: '0.85rem' }}>{channel.categoria}</span>
+              {channel.idioma && <span style={{ color: '#888', fontSize: '0.85rem' }}>{channel.idioma.toUpperCase()}</span>}
+              {channel.subtitulos_disponibles && <span style={{ color: '#00f5ff', fontSize: '0.85rem' }}>SUB</span>}
+              {channel.calidad && <span style={{ color: '#ffd700', fontSize: '0.85rem' }}>{channel.calidad}</span>}
             </div>
-          </aside>
-        )}
-      </div>
-    </div>
-  )
-}
-
-function PlayerSkeleton() {
-  return (
-    <div className={styles.page}>
-      <div className={styles.topNav}>
-        <div className="skeleton" style={{ width: 80, height: 32, borderRadius: 8 }} />
-      </div>
-      <div className={styles.layout}>
-        <div className={styles.mainCol}>
-          <div className="skeleton" style={{ width: '100%', aspectRatio: '16/9', borderRadius: 16 }} />
-          <div style={{ padding: '24px 0', display: 'flex', flexDirection: 'column', gap: 12 }}>
-            <div className="skeleton" style={{ width: 260, height: 32, borderRadius: 6 }} />
-            <div className="skeleton" style={{ width: 180, height: 20, borderRadius: 6 }} />
+            {channel.descripcion && <p style={{ color: 'rgba(255,255,255,0.6)', lineHeight: 1.7 }}>{channel.descripcion}</p>}
           </div>
         </div>
       </div>

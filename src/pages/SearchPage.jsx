@@ -1,49 +1,87 @@
-// SearchPage.jsx
-import React, { useEffect, useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useSearchParams } from 'react-router-dom'
-import { useQuery } from 'react-query'
-import { Search } from 'lucide-react'
-import { channelsAPI } from '@/services/api'
+import { canalesAPI } from '@/services/supabase'
+import { tmdbAPI } from '@/services/tmdb'
 import ChannelCard from '@/components/cards/ChannelCard'
+import MediaCard from '@/components/cards/MediaCard'
+import MediaModal from '@/components/player/MediaModal'
 
 export default function SearchPage() {
-  const [params]  = useSearchParams()
-  const q = params.get('q') || ''
-  const [inputVal, setInputVal] = useState(q)
+  const [searchParams] = useSearchParams()
+  const q = searchParams.get('q') || ''
+  const [channels, setChannels] = useState([])
+  const [movies, setMovies] = useState([])
+  const [series, setSeries] = useState([])
+  const [loading, setLoading] = useState(false)
+  const [selected, setSelected] = useState(null)
 
-  const { data, isLoading, isFetching } = useQuery(
-    ['search', q],
-    () => channelsAPI.search(q).then(r => r.data),
-    { enabled: q.length > 1 }
-  )
-
-  const channels = data?.channels || []
+  useEffect(() => {
+    if (!q) return
+    setLoading(true)
+    Promise.all([
+      canalesAPI.search(q),
+      tmdbAPI.searchMovies(q),
+      tmdbAPI.searchSeries(q),
+    ]).then(([ch, mv, sv]) => {
+      setChannels(ch.data || [])
+      setMovies((mv?.results || []).map(m => ({ ...m, type: 'movie' })))
+      setSeries((sv?.results || []).map(s => ({ ...s, type: 'tv' })))
+      setLoading(false)
+    })
+  }, [q])
 
   return (
-    <div style={{ maxWidth: 1440, margin: '0 auto', padding: '40px 32px 80px' }}>
-      <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 36, letterSpacing: '0.06em', marginBottom: 8 }}>
-        BUSCAR
-      </h1>
-      <p style={{ color: 'var(--text-muted)', marginBottom: 36 }}>
-        {q ? `Resultados para "${q}"` : 'Escribe algo para buscar'}
-      </p>
+    <div style={{ padding: '2rem 2.5rem' }}>
+      {selected && <MediaModal item={selected} onClose={() => setSelected(null)} />}
 
-      {isLoading || isFetching ? (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: 16 }}>
-          {Array.from({ length: 8 }).map((_, i) => (
-            <div key={i} className="skeleton" style={{ width: '100%', aspectRatio: '16/9', borderRadius: 12 }} />
-          ))}
+      <h1 style={{ fontFamily: 'Bebas Neue, sans-serif', fontSize: '2rem', letterSpacing: 3, marginBottom: '1.5rem' }}>
+        🔍 Resultados para: <span style={{ color: '#e50914' }}>{q}</span>
+      </h1>
+
+      {loading && <div style={{ color: '#888', textAlign: 'center', padding: '2rem' }}>Buscando...</div>}
+
+      {channels.length > 0 && (
+        <div style={{ marginBottom: '2rem' }}>
+          <div style={{ fontFamily: 'Bebas Neue, sans-serif', fontSize: '1.35rem', letterSpacing: 2, marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <span style={{ width: 3, height: 20, borderRadius: 2, background: '#e50914', display: 'inline-block' }} />
+            📡 Canales ({channels.length})
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '0.75rem' }}>
+            {channels.map((ch, i) => <ChannelCard key={ch.id} channel={ch} index={i} />)}
+          </div>
         </div>
-      ) : channels.length > 0 ? (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: 16 }}>
-          {channels.map((ch, i) => <ChannelCard key={ch.id} channel={ch} index={i} />)}
+      )}
+
+      {movies.length > 0 && (
+        <div style={{ marginBottom: '2rem' }}>
+          <div style={{ fontFamily: 'Bebas Neue, sans-serif', fontSize: '1.35rem', letterSpacing: 2, marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <span style={{ width: 3, height: 20, borderRadius: 2, background: '#e50914', display: 'inline-block' }} />
+            🎬 Películas ({movies.length})
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: '0.75rem' }}>
+            {movies.map(m => <MediaCard key={m.id} item={m} onClick={setSelected} />)}
+          </div>
         </div>
-      ) : q ? (
-        <div style={{ textAlign: 'center', padding: '80px 0', color: 'var(--text-muted)' }}>
-          <Search size={48} style={{ margin: '0 auto 16px', opacity: 0.3 }} />
-          <p>No encontramos resultados para "{q}"</p>
+      )}
+
+      {series.length > 0 && (
+        <div style={{ marginBottom: '2rem' }}>
+          <div style={{ fontFamily: 'Bebas Neue, sans-serif', fontSize: '1.35rem', letterSpacing: 2, marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <span style={{ width: 3, height: 20, borderRadius: 2, background: '#e50914', display: 'inline-block' }} />
+            📺 Series ({series.length})
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(190px, 1fr))', gap: '0.75rem' }}>
+            {series.map(s => <MediaCard key={s.id} item={s} onClick={setSelected} />)}
+          </div>
         </div>
-      ) : null}
+      )}
+
+      {!loading && !channels.length && !movies.length && !series.length && q && (
+        <div style={{ textAlign: 'center', padding: '3rem', color: '#888' }}>
+          <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>🔍</div>
+          <p>Sin resultados para "{q}"</p>
+        </div>
+      )}
     </div>
   )
 }
