@@ -70,10 +70,9 @@ function ChannelRow({ ch, countryCode, navigate }) {
         background: 'rgba(255,255,255,0.05)',
         border: '1px solid rgba(255,255,255,0.08)',
         display: 'flex', alignItems: 'center', justifyContent: 'center',
-        fontSize: '1.4rem', fontFamily: 'Bebas Neue, sans-serif',
-        color: '#e50914', fontWeight: 700,
-      }}>
-        {initial}
+        fontSize: '1.8rem',
+             }}>
+             {flag}
       </div>
 
       <div style={{ flex: 1, minWidth: 0 }}>
@@ -177,9 +176,9 @@ export default function EnVivoPage() {
           <div style={{
             width: 64, height: 64, borderRadius: 12, background: 'rgba(229,9,20,0.2)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
-            fontSize: '2rem', fontFamily: 'Bebas Neue, sans-serif', color: '#e50914', flexShrink: 0,
+            fontSize: '2.5rem', flexShrink: 0,
           }}>
-            {featured.name?.[0]?.toUpperCase()}
+            {COUNTRY_FLAGS[country] || '📺'}
           </div>
           <div style={{ flex: 1 }}>
             <div style={{ fontSize: '0.65rem', fontFamily: 'monospace', color: '#e50914', letterSpacing: 2, marginBottom: 4 }}>
