@@ -44,7 +44,13 @@ export const canalesAPI = {
 // ---- Auth ----
 export const authAPI = {
   login: (email, password) => supabase.auth.signInWithPassword({ email, password }),
-  register: (email, password) => supabase.auth.signUp({ email, password }),
+  register: (email, password) => supabase.auth.signUp({ 
+  email, 
+  password,
+  options: {
+    emailRedirectTo: 'https://edgarrdz132.github.io/EdgarAI_Stream/'
+  }
+}),
   logout: () => supabase.auth.signOut(),
   getSession: () => supabase.auth.getSession(),
   resetPassword: (email) => supabase.auth.resetPasswordForEmail(email),
