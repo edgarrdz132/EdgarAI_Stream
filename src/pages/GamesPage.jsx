@@ -2,42 +2,39 @@ import React, { useState, useRef } from 'react'
 import { Maximize2, ExternalLink, ArrowLeft, Gamepad2 } from 'lucide-react'
 
 const CONSOLES = [
-  { id: 'nes',       label: 'NES',            emoji: '🎮', color: '#e50914', url: 'https://gam.onl/nes/' },
-  { id: 'snes',      label: 'Super Nintendo',  emoji: '🕹️', color: '#7c3aed', url: 'https://gam.onl/snes/' },
-  { id: 'n64',       label: 'Nintendo 64',     emoji: '🎯', color: '#059669', url: 'https://gam.onl/n64/' },
-  { id: 'gba',       label: 'Game Boy Advance', emoji: '👾', color: '#d97706', url: 'https://gam.onl/gba/' },
-  { id: 'ps1',       label: 'PlayStation 1',   emoji: '💿', color: '#2563eb', url: 'https://gam.onl/ps1/' },
-  { id: 'genesis',   label: 'Sega Genesis',    emoji: '⚡', color: '#0891b2', url: 'https://gam.onl/genesis/' },
-  { id: 'arcade',    label: 'Arcade',          emoji: '🕹️', color: '#dc2626', url: 'https://gam.onl/arcade/' },
-  { id: 'neogeo',    label: 'Neo Geo',         emoji: '🔴', color: '#b45309', url: 'https://gam.onl/neogeo/' },
-  { id: 'atari',     label: 'Atari 2600',      emoji: '📺', color: '#6366f1', url: 'https://gam.onl/atari2600/' },
-  { id: 'gamecube',  label: 'GameCube',        emoji: '🎲', color: '#7c3aed', url: 'https://gam.onl/gamecube/' },
+  { id: 'nes',      label: 'NES',             emoji: '🎮', color: '#e50914', url: 'https://gam.onl/nes/' },
+  { id: 'snes',     label: 'Super Nintendo',   emoji: '🕹️', color: '#7c3aed', url: 'https://gam.onl/snes/' },
+  { id: 'n64',      label: 'Nintendo 64',      emoji: '🎯', color: '#059669', url: 'https://gam.onl/n64/' },
+  { id: 'gba',      label: 'Game Boy Advance', emoji: '👾', color: '#d97706', url: 'https://gam.onl/gba/' },
+  { id: 'ps1',      label: 'PlayStation 1',    emoji: '💿', color: '#2563eb', url: 'https://gam.onl/ps1/' },
+  { id: 'genesis',  label: 'Sega Genesis',     emoji: '⚡', color: '#0891b2', url: 'https://gam.onl/genesis/' },
+  { id: 'arcade',   label: 'Arcade',           emoji: '🕹️', color: '#dc2626', url: 'https://gam.onl/arcade/' },
+  { id: 'neogeo',   label: 'Neo Geo',          emoji: '🔴', color: '#b45309', url: 'https://gam.onl/neogeo/' },
+  { id: 'atari',    label: 'Atari 2600',       emoji: '📺', color: '#6366f1', url: 'https://gam.onl/atari2600/' },
+  { id: 'gamecube', label: 'GameCube',         emoji: '🎲', color: '#7c3aed', url: 'https://gam.onl/gamecube/' },
 ]
 
 export default function GamesPage() {
   const [selectedConsole, setSelectedConsole] = useState(null)
   const [iframeBlocked, setIframeBlocked] = useState(false)
-  const [fullscreen, setFullscreen] = useState(false)
   const iframeRef = useRef(null)
 
-  const handleConsoleSelect = (console) => {
-    setSelectedConsole(console)
+  const handleConsoleSelect = (c) => {
+    setSelectedConsole(c)
     setIframeBlocked(false)
   }
 
   const handleFullscreen = () => {
-    if (iframeRef.current) {
-      if (iframeRef.current.requestFullscreen) {
-        iframeRef.current.requestFullscreen()
-      }
+    if (iframeRef.current && iframeRef.current.requestFullscreen) {
+      iframeRef.current.requestFullscreen()
     }
   }
 
   const handleIframeLoad = () => {
     try {
-      const doc = iframeRef.current?.contentDocument
+      const doc = iframeRef.current && iframeRef.current.contentDocument
       if (!doc) setIframeBlocked(true)
-    } catch {
+    } catch (e) {
       setIframeBlocked(true)
     }
   }
@@ -45,54 +42,52 @@ export default function GamesPage() {
   return (
     <div style={{ minHeight: '100vh', padding: '2rem 2.5rem' }}>
 
-      {/* Header */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '2rem' }}>
-        <Gamepad2 size={28} color='#e50914' />
+        <span style={{ width: 4, height: 28, borderRadius: 2, background: '#e50914', display: 'inline-block' }} />
+        <Gamepad2 size={24} color="#e50914" />
         <div style={{ fontFamily: 'Bebas Neue, sans-serif', fontSize: '2rem', letterSpacing: 3 }}>
-          <span style={{ width: 4, height: 28, borderRadius: 2, background: '#e50914', display: 'inline-block', marginRight: '0.6rem', verticalAlign: 'middle' }} />
           JUEGOS RETRO
         </div>
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: selectedConsole ? '280px 1fr' : '1fr', gap: '1.5rem' }}>
 
-        {/* Consoles panel */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
           <div style={{ fontFamily: 'monospace', fontSize: '0.7rem', color: '#555', letterSpacing: 2, marginBottom: '0.5rem' }}>
             SELECCIONA CONSOLA
           </div>
-          {CONSOLES.map(c => (
-            <button
-              key={c.id}
-              onClick={() => handleConsoleSelect(c)}
-              style={{
-                display: 'flex', alignItems: 'center', gap: '0.75rem',
-                padding: '0.75rem 1rem', borderRadius: 8,
-                background: selectedConsole?.id === c.id ? `${c.color}22` : 'rgba(255,255,255,0.03)',
-                border: `1px solid ${selectedConsole?.id === c.id ? c.color : 'rgba(255,255,255,0.06)'}`,
-                color: selectedConsole?.id === c.id ? '#fff' : 'rgba(255,255,255,0.6)',
-                cursor: 'pointer', transition: 'all 0.15s', textAlign: 'left',
-              }}
-            >
-              <span style={{ fontSize: '1.4rem' }}>{c.emoji}</span>
-              <div>
-                <div style={{ fontWeight: 600, fontSize: '0.88rem' }}>{c.label}</div>
-                <div style={{ fontSize: '0.65rem', color: '#555', fontFamily: 'monospace' }}>
-                  {selectedConsole?.id === c.id ? '● ACTIVO' : 'CLICK PARA JUGAR'}
+          {CONSOLES.map(function(c) {
+            return (
+              <button
+                key={c.id}
+                onClick={function() { handleConsoleSelect(c) }}
+                style={{
+                  display: 'flex', alignItems: 'center', gap: '0.75rem',
+                  padding: '0.75rem 1rem', borderRadius: 8,
+                  background: selectedConsole && selectedConsole.id === c.id ? c.color + '22' : 'rgba(255,255,255,0.03)',
+                  border: '1px solid ' + (selectedConsole && selectedConsole.id === c.id ? c.color : 'rgba(255,255,255,0.06)'),
+                  color: selectedConsole && selectedConsole.id === c.id ? '#fff' : 'rgba(255,255,255,0.6)',
+                  cursor: 'pointer', transition: 'all 0.15s', textAlign: 'left', width: '100%',
+                }}
+              >
+                <span style={{ fontSize: '1.4rem' }}>{c.emoji}</span>
+                <div>
+                  <div style={{ fontWeight: 600, fontSize: '0.88rem' }}>{c.label}</div>
+                  <div style={{ fontSize: '0.65rem', color: '#555', fontFamily: 'monospace' }}>
+                    {selectedConsole && selectedConsole.id === c.id ? '● ACTIVO' : 'CLICK PARA JUGAR'}
+                  </div>
                 </div>
-              </div>
-              {selectedConsole?.id === c.id && (
-                <div style={{ marginLeft: 'auto', width: 8, height: 8, borderRadius: '50%', background: c.color }} />
-              )}
-            </button>
-          ))}
+                {selectedConsole && selectedConsole.id === c.id && (
+                  <div style={{ marginLeft: 'auto', width: 8, height: 8, borderRadius: '50%', background: c.color }} />
+                )}
+              </button>
+            )
+          })}
         </div>
 
-        {/* Game area */}
         {selectedConsole && (
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
 
-            {/* Toolbar */}
             <div style={{
               display: 'flex', alignItems: 'center', justifyContent: 'space-between',
               padding: '0.75rem 1rem',
@@ -102,8 +97,8 @@ export default function GamesPage() {
             }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                 <button
-                  onClick={() => setSelectedConsole(null)}
-                  style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: '#888', fontSize: '0.8rem', cursor: 'pointer', fontFamily: 'monospace' }}
+                  onClick={function() { setSelectedConsole(null) }}
+                  style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: '#888', fontSize: '0.8rem', cursor: 'pointer', fontFamily: 'monospace', background: 'none', border: 'none' }}
                 >
                   <ArrowLeft size={14} /> Volver
                 </button>
@@ -124,14 +119,14 @@ export default function GamesPage() {
                 >
                   <Maximize2 size={13} /> Pantalla completa
                 </button>
-                
+                <a
                   href={selectedConsole.url}
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{
                     display: 'flex', alignItems: 'center', gap: '0.4rem',
                     padding: '0.4rem 0.8rem', borderRadius: 6,
-                    background: '#e50914', border: 'none',
+                    background: '#e50914',
                     color: '#fff', fontSize: '0.78rem', cursor: 'pointer', fontFamily: 'monospace',
                     textDecoration: 'none',
                   }}
@@ -141,16 +136,15 @@ export default function GamesPage() {
               </div>
             </div>
 
-            {/* iframe o mensaje de bloqueo */}
             <div style={{
               position: 'relative', borderRadius: 12, overflow: 'hidden',
               background: '#000', border: '1px solid rgba(255,255,255,0.06)',
-              aspectRatio: '16/9',
+              aspectRatio: '16/9', minHeight: 400,
             }}>
               {iframeBlocked ? (
                 <div style={{
                   display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-                  height: '100%', gap: '1rem', padding: '2rem',
+                  height: '100%', minHeight: 400, gap: '1rem', padding: '2rem',
                 }}>
                   <span style={{ fontSize: '3rem' }}>{selectedConsole.emoji}</span>
                   <div style={{ fontFamily: 'Bebas Neue, sans-serif', fontSize: '1.5rem', letterSpacing: 2 }}>
@@ -159,7 +153,7 @@ export default function GamesPage() {
                   <p style={{ color: '#666', fontFamily: 'monospace', fontSize: '0.8rem', textAlign: 'center' }}>
                     Este sitio no permite ser embebido.<br />Ábrelo en una nueva pestaña para jugar.
                   </p>
-                  
+                  <a
                     href={selectedConsole.url}
                     target="_blank"
                     rel="noopener noreferrer"
@@ -177,18 +171,17 @@ export default function GamesPage() {
                 <iframe
                   ref={iframeRef}
                   src={selectedConsole.url}
-                  style={{ width: '100%', height: '100%', border: 'none' }}
+                  style={{ width: '100%', height: '100%', border: 'none', minHeight: 400 }}
                   title={selectedConsole.label}
                   allow="fullscreen"
                   onLoad={handleIframeLoad}
-                  onError={() => setIframeBlocked(true)}
+                  onError={function() { setIframeBlocked(true) }}
                 />
               )}
             </div>
           </div>
         )}
 
-        {/* Empty state */}
         {!selectedConsole && (
           <div style={{
             display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
