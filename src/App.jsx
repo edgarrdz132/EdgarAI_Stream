@@ -13,7 +13,7 @@ const LoginPage       = lazy(() => import('@/pages/LoginPage'))
 const MoviesPage      = lazy(() => import('@/pages/MoviesPage'))
 const SeriesPage      = lazy(() => import('@/pages/SeriesPage'))
 const AnimePage       = lazy(() => import('@/pages/AnimePage'))
-const TelenovelasPage = lazy(() => import('@/pages/TelenovelasPage'))
+const GamesPage = lazy(() => import('@/pages/GamesPage'))
 const CaricaturasPage = lazy(() => import('@/pages/CaricaturasPage'))
 const EnVivoPage      = lazy(() => import('@/pages/EnVivoPage'))   // ← NUEVO
 const AdminDashboard  = lazy(() => import('@/pages/admin/AdminDashboard'))
@@ -38,7 +38,7 @@ export default function App() {
           <Route path="peliculas" element={<MoviesPage />} />
           <Route path="series" element={<SeriesPage />} />
           <Route path="anime" element={<AnimePage />} />
-          <Route path="telenovelas" element={<TelenovelasPage />} />
+          <Route path="telenovelas" element={<GamesPage />} />
           <Route path="caricaturas" element={<CaricaturasPage />} />
           <Route path="en-vivo" element={<EnVivoPage />} />          {/* ← NUEVO */}
           <Route path="watch/:channelId" element={<PlayerPage />} />
