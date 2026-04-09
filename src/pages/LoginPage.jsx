@@ -41,7 +41,7 @@ export default function LoginPage() {
       await register(email, password)
       setSuccess('✅ Cuenta creada. Revisa tu correo para confirmar.')
     } catch (err) {
-      setError(err.response?.data?.message || 'Error al crear la cuenta')
+      setError(err.message || 'Error al crear la cuenta. Intenta en unos minutos.')
     } finally { setLoading(false) }
   }
 
