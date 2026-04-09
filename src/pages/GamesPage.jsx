@@ -304,7 +304,7 @@ export default function GamesPage() {
   const frame = selectedConsole ? (FRAMES[selectedConsole.frame] || FRAMES.arcade) : null
 
   const emulatorSrc = selectedGame && selectedConsole
-    ? '/emulator.html?core=' + selectedConsole.core + '&rom=' + encodeURIComponent(selectedGame.rom) + '&name=' + encodeURIComponent(selectedGame.name)
+    ? '/EdgarAI_Stream/emulator.html?core=' + selectedConsole.core + '&rom=' + encodeURIComponent(selectedGame.rom) + '&name=' + encodeURIComponent(selectedGame.name)
     : null
 
   return (
