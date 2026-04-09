@@ -11,7 +11,7 @@ const NAV_LINKS = [
   { label: 'Series',      path: '/series' },
   { label: 'Anime',       path: '/anime' },
   { label: 'Caricaturas', path: '/caricaturas' },
-  { label: 'Juegos', path: '/telenovelas' },
+  { label: 'Juegos', path: '/games' },
   { label: 'En Vivo',     path: '/en-vivo' },   // ← corregido
 ]
 
