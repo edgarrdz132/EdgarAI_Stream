@@ -4,6 +4,7 @@ import Layout from '@/components/layout/Layout'
 import AdminLayout from '@/components/admin/AdminLayout'
 import { useAuthStore } from '@/store/authStore'
 import LoadingScreen from '@/components/ui/LoadingScreen'
+import { useEffect } from 'react'
 
 const HomePage        = lazy(() => import('@/pages/HomePage'))
 const PlayerPage      = lazy(() => import('@/pages/PlayerPage'))
@@ -27,15 +28,20 @@ function ProtectedRoute({ children, adminOnly = false }) {
   if (adminOnly && user?.role !== 'admin') return <Navigate to="/" replace />
   return children
 }
+  export default function App() {
+    const { initialize } = useAuthStore()
 
-export default function App() {
+    useEffect(() => {
+    initialize()
+  }, [])
+
   return (
     <Suspense fallback={<LoadingScreen />}>
       <Routes>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/" element={
- 	 <ProtectedRoute><Layout /></ProtectedRoute>
-	}>			
+         <ProtectedRoute><Layout /></ProtectedRoute>
+        }>	
           <Route index element={<HomePage />} />
           <Route path="peliculas" element={<MoviesPage />} />
           <Route path="series" element={<SeriesPage />} />
