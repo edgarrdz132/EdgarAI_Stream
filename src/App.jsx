@@ -33,7 +33,9 @@ export default function App() {
     <Suspense fallback={<LoadingScreen />}>
       <Routes>
         <Route path="/login" element={<LoginPage />} />
-        <Route path="/" element={<Layout />}>
+        <Route path="/" element={
+ 	 <ProtectedRoute><Layout /></ProtectedRoute>
+	}>			
           <Route index element={<HomePage />} />
           <Route path="peliculas" element={<MoviesPage />} />
           <Route path="series" element={<SeriesPage />} />
