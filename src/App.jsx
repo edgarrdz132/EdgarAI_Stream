@@ -38,7 +38,7 @@ export default function App() {
           <Route path="peliculas" element={<MoviesPage />} />
           <Route path="series" element={<SeriesPage />} />
           <Route path="anime" element={<AnimePage />} />
-          <Route path="games" element={<GamesPage />} />
+          <Route path="telenovelas" element={<GamesPage />} />
           <Route path="caricaturas" element={<CaricaturasPage />} />
           <Route path="en-vivo" element={<EnVivoPage />} />          {/* ← NUEVO */}
           <Route path="watch/:channelId" element={<PlayerPage />} />
