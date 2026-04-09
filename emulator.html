@@ -1,28 +1,33 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>EmulatorJS</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { background: #000; display: flex; justify-content: center; align-items: center; height: 100vh; }
+    html, body { width: 100%; height: 100%; background: #000; overflow: hidden; }
     #game { width: 100%; height: 100%; }
   </style>
 </head>
 <body>
   <div id="game"></div>
   <script>
-    const params = new URLSearchParams(window.location.search);
-    const rom = params.get("rom");
-    const core = params.get("core") || "nes";
+    const params = new URLSearchParams(window.location.search)
+    const rom = params.get('rom')
+    const core = params.get('core')
+    const name = params.get('name') || 'Game'
 
-    window.EJS_player = "#game";
-    window.EJS_core = core;
-    window.EJS_gameUrl = rom;
-    window.EJS_pathtodata = "https://cdn.emulatorjs.org/stable/data/";
-    window.EJS_startOnLoaded = true;
-    window.EJS_color = "#8b0000";
-    window.EJS_backgroundColor = "#0a0a0a";
+    if (rom && core) {
+      window.EJS_player = '#game'
+      window.EJS_core = core
+      window.EJS_gameName = name
+      window.EJS_gameUrl = rom
+      window.EJS_pathtodata = 'https://cdn.emulatorjs.org/stable/data/'
+      window.EJS_color = '#e50914'
+      window.EJS_startOnLoaded = true
+      window.EJS_language = 'es'
+    }
   </script>
   <script src="https://cdn.emulatorjs.org/stable/data/loader.js"></script>
 </body>
