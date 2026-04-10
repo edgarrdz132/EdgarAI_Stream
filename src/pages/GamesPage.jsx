@@ -130,9 +130,7 @@ const styles = `
   .cover-panel img.cover-img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
-    display: block;
-    transition: transform 0.4s ease;
+    object-fit: contain; 
   }
 
   .cover-panel:hover img.cover-img {
@@ -374,9 +372,10 @@ export default function GamesPage() {
                 /* Cover preview */
                 <div>
                   {/* Cover full */}
-                  <div className="cover-panel" style={{ aspectRatio: '16/9', border: `1px solid ${c}22` }}>
+                  <div className="cover-panel" style={{ aspectRatio: '4/3', border: `1px solid ${c}22`, background: '#0d0d12' }}>
                     <img className="cover-img" src={previewGame.cover} alt={previewGame.name}
                       onError={e => { e.target.style.display = 'none' }} />
+                      style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
                     <div className="scanlines" />
                     <div className="cover-overlay">
                       <div style={{ fontSize: '0.62rem', color: c, letterSpacing: 3, fontFamily: 'Share Tech Mono, monospace', marginBottom: '0.25rem' }}>
