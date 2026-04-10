@@ -4,59 +4,61 @@ import { Maximize2, ArrowLeft, Gamepad2, Search, Play } from 'lucide-react'
 const R2 = 'https://pub-45cf5931156d4ae4b601a245d802b1e1.r2.dev'
 
 const CONSOLES = [
-  { id: 'nes',  label: 'NES',             emoji: '🎮', color: '#e50914', core: 'nes',  frame: 'nes' },
-  { id: 'snes', label: 'Super Nintendo',  emoji: '🕹️', color: '#7c3aed', core: 'snes', frame: 'snes' },
-  { id: 'n64',  label: 'Nintendo 64',     emoji: '🎯', color: '#059669', core: 'n64',  frame: 'n64' },
-  { id: 'gb',   label: 'Game Boy',        emoji: '👾', color: '#16a34a', core: 'gb',   frame: 'gb' },
-  { id: 'gba',  label: 'Game Boy Advance',emoji: '💛', color: '#d97706', core: 'gba',  frame: 'gba' },
+  { id: 'nes',  label: 'NES',              emoji: '🎮', color: '#e50914', core: 'nes',  frame: 'nes' },
+  { id: 'snes', label: 'Super Nintendo',   emoji: '🕹️', color: '#7c3aed', core: 'snes', frame: 'snes' },
+  { id: 'n64',  label: 'Nintendo 64',      emoji: '🎯', color: '#059669', core: 'n64',  frame: 'n64' },
+  { id: 'gb',   label: 'Game Boy',         emoji: '👾', color: '#16a34a', core: 'gb',   frame: 'gb' },
+  { id: 'gba',  label: 'Game Boy Advance', emoji: '💛', color: '#d97706', core: 'gba',  frame: 'gba' },
 ]
 
-const FRAMES = {
-  nes:  { bg: '#0a0000', border: '#e50914', glow: '#e5091455', label: '● NES ●' },
-  snes: { bg: '#0a0010', border: '#7c3aed', glow: '#7c3aed55', label: '● SUPER NINTENDO ●' },
-  n64:  { bg: '#000a05', border: '#059669', glow: '#05966955', label: '● NINTENDO 64 ●' },
-  gb:   { bg: '#000a02', border: '#16a34a', glow: '#16a34a55', label: '● GAME BOY ●' },
-  gba:  { bg: '#0a0800', border: '#d97706', glow: '#d9770655', label: '● GAME BOY ADVANCE ●' },
+// Posición de la pantalla dentro de cada imagen de consola (en % del contenedor)
+// top, left, width, height son porcentajes de la imagen
+const CONSOLE_SCREENS = {
+  nes:  { img: `${R2}/consoles/arcade.webp`,  top: '22%', left: '11%', width: '36%', height: '47%' },
+  snes: { img: `${R2}/consoles/snes.webp`,    top: '29%', left: '12%', width: '45%', height: '42%' },
+  n64:  { img: `${R2}/consoles/n64.webp`,     top: '12%', left: '19%', width: '61%', height: '70%' },
+  gb:   { img: `${R2}/consoles/gameboy.webp`, top: '19%', left: '22%', width: '53%', height: '48%' },
+  gba:  { img: `${R2}/consoles/gba.webp`,     top: '18%', left: '16%', width: '57%', height: '60%' },
 }
 
 const GAMES = {
   nes: [
-    { name: 'Super Mario Bros',           rom: `${R2}/nes/Super Mario Bros. + Duck Hunt (U).nes`,                              cover: `${R2}/nes/Super Mario Bros. + Duck Hunt (U).cover.jpg` },
-    { name: 'Super Mario Bros 2',         rom: `${R2}/nes/Super Mario Bros. 2.nes`,                                             cover: `${R2}/nes/Super Mario Bros. 2.cover.jpg` },
-    { name: 'Super Mario Bros 3',         rom: `${R2}/nes/Super Mario Bros. 3 (E) [!].nes`,                                     cover: `${R2}/nes/Super Mario Bros. 3 (E) [!].cover.jpg` },
-    { name: 'Contra',                     rom: `${R2}/nes/Contra (U).nes`,                                                      cover: `${R2}/nes/Contra (U).cover.jpg` },
-    { name: 'Contra Force',               rom: `${R2}/nes/Contra Force (U).nes`,                                                cover: `${R2}/nes/Contra Force (U).cover.jpg` },
-    { name: 'Castlevania',                rom: `${R2}/nes/Castlevania (U).nes`,                                                 cover: `${R2}/nes/Castlevania (U).cover.jpg` },
-    { name: "Castlevania II Simon's Quest", rom: `${R2}/nes/Castlevania II - Simon s Quest (U).nes`,                           cover: `${R2}/nes/Castlevania II - Simon s Quest (U).cover.jpg` },
-    { name: "Castlevania III Dracula's Curse", rom: `${R2}/nes/Castlevania III - Dracula s Curse (U).nes`,                     cover: `${R2}/nes/Castlevania III - Dracula s Curse (U).cover.jpg` },
-    { name: 'Zelda',                      rom: `${R2}/nes/Legend of Zelda, The (GC).nes`,                                       cover: `${R2}/nes/Legend of Zelda, The (GC).cover.jpg` },
-    { name: 'Zelda II Adventure of Link', rom: `${R2}/nes/Zelda II - The Adventure of Link (U).nes`,                           cover: `${R2}/nes/Zelda II - The Adventure of Link (U).cover.jpg` },
-    { name: 'Tetris',                     rom: `${R2}/nes/Tetris (U).nes`,                                                      cover: `${R2}/nes/Tetris (U).cover.jpg` },
-    { name: 'Duck Tales',                 rom: `${R2}/nes/Duck Tales (U).nes`,                                                  cover: `${R2}/nes/Duck Tales (U).cover.jpg` },
-    { name: 'Duck Tales 2',               rom: `${R2}/nes/Duck Tales 2 (U).nes`,                                                cover: `${R2}/nes/Duck Tales 2 (U).cover.jpg` },
-    { name: 'Ninja Gaiden',               rom: `${R2}/nes/Ninja Gaiden (U).nes`,                                                cover: `${R2}/nes/Ninja Gaiden (U).cover.jpg` },
-    { name: 'Ninja Gaiden II',            rom: `${R2}/nes/Ninja Gaiden II - The Dark Sword of Chaos (U).nes`,                  cover: `${R2}/nes/Ninja Gaiden II - The Dark Sword of Chaos (U).cover.jpg` },
-    { name: 'Ninja Gaiden III',           rom: `${R2}/nes/Ninja Gaiden III - The Ancient Ship of Doom (U).nes`,                cover: `${R2}/nes/Ninja Gaiden III - The Ancient Ship of Doom (U).cover.jpg` },
-    { name: 'Punch-Out',                  rom: `${R2}/nes/Punch-Out   (U).nes`,                                                 cover: `${R2}/nes/Punch-Out   (U).cover.jpg` },
-    { name: 'Battletoads',                rom: `${R2}/nes/Battletoads (U).nes`,                                                 cover: `${R2}/nes/Battletoads (U).cover.jpg` },
-    { name: 'Battletoads & Double Dragon',rom: `${R2}/nes/Battletoads & Double Dragon - The Ultimate Team (U).nes`,             cover: `${R2}/nes/Battletoads & Double Dragon - The Ultimate Team (U).cover.jpg` },
-    { name: 'Double Dragon',              rom: `${R2}/nes/Double Dragon (U).nes`,                                               cover: `${R2}/nes/Double Dragon (U).cover.jpg` },
-    { name: 'Double Dragon III',          rom: `${R2}/nes/Double Dragon III - The Sacred Stones (U).nes`,                      cover: `${R2}/nes/Double Dragon III - The Sacred Stones (U).cover.jpg` },
-    { name: 'TMNT',                       rom: `${R2}/nes/Teenage Mutant Ninja Turtles (U).nes`,                                cover: `${R2}/nes/Teenage Mutant Ninja Turtles (U).cover.jpg` },
-    { name: 'TMNT II Arcade Game',        rom: `${R2}/nes/Teenage Mutant Ninja Turtles II - The Arcade Game (U).nes`,          cover: `${R2}/nes/Teenage Mutant Ninja Turtles II - The Arcade Game (U).cover.jpg` },
-    { name: 'TMNT III Manhattan Project', rom: `${R2}/nes/Teenage Mutant Ninja Turtles III - The Manhattan Project (U).nes`,   cover: `${R2}/nes/Teenage Mutant Ninja Turtles III - The Manhattan Project (U).cover.jpg` },
-    { name: 'TMNT Tournament Fighters',   rom: `${R2}/nes/Teenage Mutant Ninja Turtles - Tournament Fighters (U).nes`,         cover: `${R2}/nes/Teenage Mutant Ninja Turtles - Tournament Fighters (U).cover.jpg` },
-    { name: "Chip 'n Dale Rescue Rangers",rom: `${R2}/nes/Chip  n Dale Rescue Rangers (U).nes`,                                cover: `${R2}/nes/Chip  n Dale Rescue Rangers (U).cover.jpg` },
-    { name: "Chip 'n Dale Rescue Rangers 2", rom: `${R2}/nes/Chip  n Dale Rescue Rangers 2 (U).nes`,                          cover: `${R2}/nes/Chip  n Dale Rescue Rangers 2 (U).cover.jpg` },
-    { name: 'Excitebike',                 rom: `${R2}/nes/Excitebike (E).nes`,                                                  cover: `${R2}/nes/Excitebike (E).cover.jpg` },
-    { name: 'Pac-Man',                    rom: `${R2}/nes/Pac-Man (U) (Namco).nes`,                                             cover: `${R2}/nes/Pac-Man (U) (Namco).cover.jpg` },
-    { name: 'Bomberman',                  rom: `${R2}/nes/Bomberman (U).nes`,                                                   cover: `${R2}/nes/Bomberman (U).cover.jpg` },
-    { name: 'Bomberman II',               rom: `${R2}/nes/Bomberman II (U).nes`,                                                cover: `${R2}/nes/Bomberman II (U).cover.jpg` },
-    { name: 'Donkey Kong Jr',             rom: `${R2}/nes/Donkey Kong Jr. (U) (PRG1) [!].nes`,                                 cover: `${R2}/nes/Donkey Kong Jr. (U) (PRG1) [!].cover.jpg` },
-    { name: 'Mario Bros',                 rom: `${R2}/nes/Mario Bros. (E) [!].nes`,                                             cover: `${R2}/nes/Mario Bros. (E) [!].cover.jpg` },
-    { name: 'Dr Mario',                   rom: `${R2}/nes/Dr. Mario (E) [!].nes`,                                               cover: `${R2}/nes/Dr. Mario (E) [!].cover.jpg` },
-    { name: 'Gradius',                    rom: `${R2}/nes/Gradius (U).nes`,                                                     cover: `${R2}/nes/Gradius (U).cover.jpg` },
-    { name: 'Life Force',                 rom: `${R2}/nes/Life Force (U).nes`,                                                  cover: `${R2}/nes/Life Force (U).cover.jpg` },
+    { name: 'Super Mario Bros',               rom: `${R2}/nes/Super Mario Bros. + Duck Hunt (U).nes`,                              cover: `${R2}/nes/Super Mario Bros. + Duck Hunt (U).cover.jpg` },
+    { name: 'Super Mario Bros 2',             rom: `${R2}/nes/Super Mario Bros. 2.nes`,                                             cover: `${R2}/nes/Super Mario Bros. 2.cover.jpg` },
+    { name: 'Super Mario Bros 3',             rom: `${R2}/nes/Super Mario Bros. 3 (E) [!].nes`,                                     cover: `${R2}/nes/Super Mario Bros. 3 (E) [!].cover.jpg` },
+    { name: 'Contra',                         rom: `${R2}/nes/Contra (U).nes`,                                                      cover: `${R2}/nes/Contra (U).cover.jpg` },
+    { name: 'Contra Force',                   rom: `${R2}/nes/Contra Force (U).nes`,                                                cover: `${R2}/nes/Contra Force (U).cover.jpg` },
+    { name: 'Castlevania',                    rom: `${R2}/nes/Castlevania (U).nes`,                                                 cover: `${R2}/nes/Castlevania (U).cover.jpg` },
+    { name: "Castlevania II Simon's Quest",   rom: `${R2}/nes/Castlevania II - Simon s Quest (U).nes`,                             cover: `${R2}/nes/Castlevania II - Simon s Quest (U).cover.jpg` },
+    { name: "Castlevania III Dracula's Curse",rom: `${R2}/nes/Castlevania III - Dracula s Curse (U).nes`,                          cover: `${R2}/nes/Castlevania III - Dracula s Curse (U).cover.jpg` },
+    { name: 'Zelda',                          rom: `${R2}/nes/Legend of Zelda, The (GC).nes`,                                       cover: `${R2}/nes/Legend of Zelda, The (GC).cover.jpg` },
+    { name: 'Zelda II Adventure of Link',     rom: `${R2}/nes/Zelda II - The Adventure of Link (U).nes`,                           cover: `${R2}/nes/Zelda II - The Adventure of Link (U).cover.jpg` },
+    { name: 'Tetris',                         rom: `${R2}/nes/Tetris (U).nes`,                                                      cover: `${R2}/nes/Tetris (U).cover.jpg` },
+    { name: 'Duck Tales',                     rom: `${R2}/nes/Duck Tales (U).nes`,                                                  cover: `${R2}/nes/Duck Tales (U).cover.jpg` },
+    { name: 'Duck Tales 2',                   rom: `${R2}/nes/Duck Tales 2 (U).nes`,                                                cover: `${R2}/nes/Duck Tales 2 (U).cover.jpg` },
+    { name: 'Ninja Gaiden',                   rom: `${R2}/nes/Ninja Gaiden (U).nes`,                                                cover: `${R2}/nes/Ninja Gaiden (U).cover.jpg` },
+    { name: 'Ninja Gaiden II',                rom: `${R2}/nes/Ninja Gaiden II - The Dark Sword of Chaos (U).nes`,                  cover: `${R2}/nes/Ninja Gaiden II - The Dark Sword of Chaos (U).cover.jpg` },
+    { name: 'Ninja Gaiden III',               rom: `${R2}/nes/Ninja Gaiden III - The Ancient Ship of Doom (U).nes`,                cover: `${R2}/nes/Ninja Gaiden III - The Ancient Ship of Doom (U).cover.jpg` },
+    { name: 'Punch-Out',                      rom: `${R2}/nes/Punch-Out   (U).nes`,                                                 cover: `${R2}/nes/Punch-Out   (U).cover.jpg` },
+    { name: 'Battletoads',                    rom: `${R2}/nes/Battletoads (U).nes`,                                                 cover: `${R2}/nes/Battletoads (U).cover.jpg` },
+    { name: 'Battletoads & Double Dragon',    rom: `${R2}/nes/Battletoads & Double Dragon - The Ultimate Team (U).nes`,             cover: `${R2}/nes/Battletoads & Double Dragon - The Ultimate Team (U).cover.jpg` },
+    { name: 'Double Dragon',                  rom: `${R2}/nes/Double Dragon (U).nes`,                                               cover: `${R2}/nes/Double Dragon (U).cover.jpg` },
+    { name: 'Double Dragon III',              rom: `${R2}/nes/Double Dragon III - The Sacred Stones (U).nes`,                      cover: `${R2}/nes/Double Dragon III - The Sacred Stones (U).cover.jpg` },
+    { name: 'TMNT',                           rom: `${R2}/nes/Teenage Mutant Ninja Turtles (U).nes`,                                cover: `${R2}/nes/Teenage Mutant Ninja Turtles (U).cover.jpg` },
+    { name: 'TMNT II Arcade Game',            rom: `${R2}/nes/Teenage Mutant Ninja Turtles II - The Arcade Game (U).nes`,          cover: `${R2}/nes/Teenage Mutant Ninja Turtles II - The Arcade Game (U).cover.jpg` },
+    { name: 'TMNT III Manhattan Project',     rom: `${R2}/nes/Teenage Mutant Ninja Turtles III - The Manhattan Project (U).nes`,   cover: `${R2}/nes/Teenage Mutant Ninja Turtles III - The Manhattan Project (U).cover.jpg` },
+    { name: 'TMNT Tournament Fighters',       rom: `${R2}/nes/Teenage Mutant Ninja Turtles - Tournament Fighters (U).nes`,         cover: `${R2}/nes/Teenage Mutant Ninja Turtles - Tournament Fighters (U).cover.jpg` },
+    { name: "Chip 'n Dale Rescue Rangers",    rom: `${R2}/nes/Chip  n Dale Rescue Rangers (U).nes`,                                cover: `${R2}/nes/Chip  n Dale Rescue Rangers (U).cover.jpg` },
+    { name: "Chip 'n Dale Rescue Rangers 2",  rom: `${R2}/nes/Chip  n Dale Rescue Rangers 2 (U).nes`,                              cover: `${R2}/nes/Chip  n Dale Rescue Rangers 2 (U).cover.jpg` },
+    { name: 'Excitebike',                     rom: `${R2}/nes/Excitebike (E).nes`,                                                  cover: `${R2}/nes/Excitebike (E).cover.jpg` },
+    { name: 'Pac-Man',                        rom: `${R2}/nes/Pac-Man (U) (Namco).nes`,                                             cover: `${R2}/nes/Pac-Man (U) (Namco).cover.jpg` },
+    { name: 'Bomberman',                      rom: `${R2}/nes/Bomberman (U).nes`,                                                   cover: `${R2}/nes/Bomberman (U).cover.jpg` },
+    { name: 'Bomberman II',                   rom: `${R2}/nes/Bomberman II (U).nes`,                                                cover: `${R2}/nes/Bomberman II (U).cover.jpg` },
+    { name: 'Donkey Kong Jr',                 rom: `${R2}/nes/Donkey Kong Jr. (U) (PRG1) [!].nes`,                                 cover: `${R2}/nes/Donkey Kong Jr. (U) (PRG1) [!].cover.jpg` },
+    { name: 'Mario Bros',                     rom: `${R2}/nes/Mario Bros. (E) [!].nes`,                                             cover: `${R2}/nes/Mario Bros. (E) [!].cover.jpg` },
+    { name: 'Dr Mario',                       rom: `${R2}/nes/Dr. Mario (E) [!].nes`,                                               cover: `${R2}/nes/Dr. Mario (E) [!].cover.jpg` },
+    { name: 'Gradius',                        rom: `${R2}/nes/Gradius (U).nes`,                                                     cover: `${R2}/nes/Gradius (U).cover.jpg` },
+    { name: 'Life Force',                     rom: `${R2}/nes/Life Force (U).nes`,                                                  cover: `${R2}/nes/Life Force (U).cover.jpg` },
   ],
   snes: [],
   n64: [],
@@ -72,12 +74,12 @@ export default function GamesPage() {
   const [launched, setLaunched] = useState(false)
   const iframeRef = useRef(null)
 
-  const frame = FRAMES[selectedConsole.frame]
+  const screen = CONSOLE_SCREENS[selectedConsole.id]
   const games = GAMES[selectedConsole.id] || []
   const filtered = games.filter(g => g.name.toLowerCase().includes(search.toLowerCase()))
   const previewGame = hoveredGame || selectedGame
 
-  const emulatorSrc = selectedGame && launched && selectedConsole
+  const emulatorSrc = selectedGame && launched
     ? `/EdgarAI_Stream/emulator.html?core=${selectedConsole.core}&rom=${encodeURIComponent(selectedGame.rom)}&name=${encodeURIComponent(selectedGame.name)}`
     : null
 
@@ -92,6 +94,7 @@ export default function GamesPage() {
 
   return (
     <div style={{ minHeight: '100vh', background: '#0a0a0a', color: '#fff', padding: '1.5rem', fontFamily: 'monospace' }}>
+
       {/* Header */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.5rem' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
@@ -103,7 +106,7 @@ export default function GamesPage() {
         </button>
       </div>
 
-      {/* Consoles */}
+      {/* Console selector */}
       <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1.5rem', flexWrap: 'wrap' }}>
         {CONSOLES.map(c => (
           <button key={c.id} onClick={() => { setSelectedConsole(c); setSelectedGame(null); setLaunched(false); setSearch('') }}
@@ -119,10 +122,17 @@ export default function GamesPage() {
       </div>
 
       {GAMES[selectedConsole.id].length === 0 ? (
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: 400, gap: '1rem' }}>
-          <span style={{ fontSize: '4rem' }}>{selectedConsole.emoji}</span>
-          <div style={{ fontFamily: 'Bebas Neue, sans-serif', fontSize: '1.5rem', letterSpacing: 3, color: selectedConsole.color }}>{selectedConsole.label}</div>
-          <div style={{ color: '#555', fontSize: '0.8rem' }}>Próximamente — subiendo ROMs</div>
+        /* Próximamente con imagen de consola */
+        <div style={{ position: 'relative', width: '100%', maxWidth: 700 }}>
+          <img src={screen.img} alt={selectedConsole.label} style={{ width: '100%', borderRadius: 12 }} />
+          <div style={{
+            position: 'absolute', top: screen.top, left: screen.left, width: screen.width, height: screen.height,
+            display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+            background: 'rgba(0,0,0,0.85)', gap: '0.5rem',
+          }}>
+            <span style={{ fontSize: '2rem' }}>{selectedConsole.emoji}</span>
+            <div style={{ fontFamily: 'Bebas Neue, sans-serif', fontSize: '1rem', letterSpacing: 3, color: selectedConsole.color }}>PRÓXIMAMENTE</div>
+          </div>
         </div>
       ) : (
         <div style={{ display: 'grid', gridTemplateColumns: '260px 1fr', gap: '1.5rem' }}>
@@ -162,7 +172,7 @@ export default function GamesPage() {
             </div>
           </div>
 
-          {/* Right panel */}
+          {/* Right panel — consola con pantalla */}
           <div>
             {launched && selectedGame ? (
               /* Emulator running */
@@ -182,71 +192,60 @@ export default function GamesPage() {
                     </button>
                   </div>
                 </div>
-                <div style={{ borderRadius: 16, overflow: 'hidden', background: frame.bg, border: '3px solid ' + frame.border, boxShadow: '0 0 40px ' + frame.glow + ', inset 0 0 20px rgba(0,0,0,0.5)', padding: '12px 12px 20px' }}>
-                  <div style={{ fontFamily: 'Bebas Neue, sans-serif', fontSize: '0.65rem', letterSpacing: 4, color: frame.border, textAlign: 'center', marginBottom: 8, opacity: 0.8 }}>
-                    {frame.label}
-                  </div>
-                  <div style={{ borderRadius: 8, overflow: 'hidden', aspectRatio: '16/9' }}>
+                {/* Consola con emulador adentro */}
+                <div style={{ position: 'relative', width: '100%' }}>
+                  <img src={screen.img} alt={selectedConsole.label} style={{ width: '100%', borderRadius: 12 }} />
+                  <div style={{ position: 'absolute', top: screen.top, left: screen.left, width: screen.width, height: screen.height, overflow: 'hidden' }}>
                     <iframe ref={iframeRef} src={emulatorSrc}
                       style={{ width: '100%', height: '100%', border: 'none', display: 'block' }}
                       title={selectedGame.name} allow='fullscreen; gamepad' />
                   </div>
-                  <div style={{ display: 'flex', justifyContent: 'center', gap: '0.5rem', marginTop: 10 }}>
-                    {[0,1,2].map(i => <div key={i} style={{ width: 8, height: 8, borderRadius: '50%', background: frame.border, opacity: 0.6 }} />)}
-                  </div>
                 </div>
               </div>
-            ) : previewGame ? (
-              /* Game preview with cover */
-              <div style={{ borderRadius: 16, overflow: 'hidden', background: frame.bg, border: '2px solid ' + frame.border, boxShadow: '0 0 30px ' + frame.glow, padding: '1.5rem', display: 'flex', gap: '1.5rem', alignItems: 'flex-start' }}>
-                {/* Cover */}
-                <div style={{ flexShrink: 0, width: 180, height: 180, borderRadius: 12, overflow: 'hidden', border: '2px solid ' + frame.border + '66', background: '#111' }}>
-                  {previewGame.cover ? (
+            ) : (
+              /* Preview con imagen de consola y carátula en pantalla */
+              <div style={{ position: 'relative', width: '100%' }}>
+                <img src={screen.img} alt={selectedConsole.label} style={{ width: '100%', borderRadius: 12 }} />
+                {/* Pantalla de la consola */}
+                <div style={{
+                  position: 'absolute', top: screen.top, left: screen.left, width: screen.width, height: screen.height,
+                  overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  background: '#000',
+                }}>
+                  {previewGame && previewGame.cover ? (
                     <img src={previewGame.cover} alt={previewGame.name}
                       style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                       onError={e => { e.target.style.display = 'none' }} />
                   ) : (
-                    <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '3rem' }}>
-                      {selectedConsole.emoji}
+                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem' }}>
+                      <span style={{ fontSize: '2.5rem' }}>{selectedConsole.emoji}</span>
+                      <div style={{ fontFamily: 'monospace', fontSize: '0.7rem', color: '#444' }}>
+                        Pasa el cursor sobre un juego
+                      </div>
                     </div>
                   )}
-                </div>
-                {/* Info */}
-                <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-                  <div style={{ fontFamily: 'Bebas Neue, sans-serif', fontSize: '1.8rem', letterSpacing: 3, color: selectedConsole.color, lineHeight: 1.1 }}>
-                    {previewGame.name}
-                  </div>
-                  <div style={{ fontSize: '0.75rem', color: '#555', fontFamily: 'monospace' }}>
-                    {selectedConsole.label} · EmulatorJS
-                  </div>
-                  {selectedGame && selectedGame.name === previewGame.name ? (
-                    <button onClick={() => setLaunched(true)}
-                      style={{
-                        display: 'flex', alignItems: 'center', gap: '0.5rem', marginTop: '0.5rem',
-                        padding: '0.75rem 1.5rem', borderRadius: 10, cursor: 'pointer',
-                        background: selectedConsole.color, border: 'none',
-                        color: '#fff', fontSize: '0.9rem', fontFamily: 'Bebas Neue, sans-serif',
-                        letterSpacing: 2, width: 'fit-content',
-                        boxShadow: '0 0 20px ' + selectedConsole.color + '66',
-                      }}>
-                      <Play size={16} /> JUGAR
-                    </button>
-                  ) : (
-                    <div style={{ fontSize: '0.75rem', color: '#444', fontFamily: 'monospace', marginTop: '0.5rem' }}>
-                      Haz clic en el juego para seleccionarlo
+                  {/* Overlay con botón JUGAR cuando hay juego seleccionado */}
+                  {selectedGame && selectedGame.name === previewGame?.name && (
+                    <div style={{
+                      position: 'absolute', inset: 0,
+                      background: 'rgba(0,0,0,0.5)',
+                      display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '0.5rem',
+                    }}>
+                      <div style={{ fontFamily: 'Bebas Neue, sans-serif', fontSize: '1rem', letterSpacing: 2, color: '#fff', textAlign: 'center', padding: '0 0.5rem' }}>
+                        {selectedGame.name}
+                      </div>
+                      <button onClick={() => setLaunched(true)}
+                        style={{
+                          display: 'flex', alignItems: 'center', gap: '0.4rem',
+                          padding: '0.5rem 1.2rem', borderRadius: 8, cursor: 'pointer',
+                          background: selectedConsole.color, border: 'none',
+                          color: '#fff', fontSize: '0.85rem', fontFamily: 'Bebas Neue, sans-serif',
+                          letterSpacing: 2, boxShadow: '0 0 15px ' + selectedConsole.color + '88',
+                        }}>
+                        <Play size={14} /> JUGAR
+                      </button>
                     </div>
                   )}
-                </div>
-              </div>
-            ) : (
-              /* Empty state */
-              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: 400, background: frame.bg, border: '2px solid ' + frame.border, borderRadius: 16, gap: '1rem', boxShadow: '0 0 30px ' + frame.glow }}>
-                <span style={{ fontSize: '4rem' }}>{selectedConsole.emoji}</span>
-                <div style={{ fontFamily: 'Bebas Neue, sans-serif', fontSize: '1.5rem', letterSpacing: 3, color: selectedConsole.color }}>
-                  {selectedConsole.label}
-                </div>
-                <div style={{ fontFamily: 'monospace', fontSize: '0.75rem', color: '#555' }}>
-                  Pasa el cursor sobre un juego para ver la carátula
                 </div>
               </div>
             )}
@@ -256,3 +255,4 @@ export default function GamesPage() {
     </div>
   )
 }
+
