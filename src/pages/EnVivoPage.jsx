@@ -236,7 +236,7 @@ export default function EnVivoPage() {
               </div>
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
-                {cat.channels.slice(0, 8).map(ch => (
+                {cat.channels.map(ch => (
                   <ChannelRow key={ch.nanoid} ch={ch} countryCode={country} navigate={navigate} />
                 ))}
                 {cat.channels.length > 8 && (
