@@ -14,7 +14,7 @@ export const canalesAPI = {
     .eq('featured', true)
     .limit(10),
 
-  getByCategory: (categoria, limit = 12) => supabase
+  getByCategory: (categoria, limit = 1000) => supabase
     .from('canales')
     .select('*')
     .eq('estado', 'activo')
