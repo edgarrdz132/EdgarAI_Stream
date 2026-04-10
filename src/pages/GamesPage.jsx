@@ -371,7 +371,7 @@ export default function GamesPage() {
               ) : previewGame ? (
                 /* Cover preview */
                 <div>
-                  <div className="cover-panel" style={{ aspectRatio: '4/3', border: `1px solid ${c}22`, background: '#0d0d12', maxHeight: '300px' }}>
+                  <div className="cover-panel" style={{ aspectRatio: '4/3', border: `1px solid ${c}22`, background: '#0d0d12', maxHeight: '340px' }}>
  			 <img src={previewGame.cover} alt={previewGame.name}
    				 style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block' }}
     				onError={e => { e.target.style.display = 'none' }} />
