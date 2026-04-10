@@ -373,11 +373,11 @@ export default function GamesPage() {
                 <div>
                   {/* Cover full */}
                   <div className="cover-panel" style={{ aspectRatio: '4/3', border: `1px solid ${c}22`, background: '#0d0d12' }}>
-                    <img className="cover-img" src={previewGame.cover} alt={previewGame.name}
-                      onError={e => { e.target.style.display = 'none' }} />
-                      style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
-                    <div className="scanlines" />
-                    <div className="cover-overlay">
+ 			 <img src={previewGame.cover} alt={previewGame.name}
+   				 style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block' }}
+    				onError={e => { e.target.style.display = 'none' }} />
+  				<div className="scanlines" />
+ 			 <div className="cover-overlay">
                       <div style={{ fontSize: '0.62rem', color: c, letterSpacing: 3, fontFamily: 'Share Tech Mono, monospace', marginBottom: '0.25rem' }}>
                         {selectedConsole.label.toUpperCase()} · EMULATORJS
                       </div>
