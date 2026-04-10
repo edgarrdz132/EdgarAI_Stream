@@ -137,7 +137,7 @@ function LiveSection() {
         </div>
       ) : (
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '0.75rem' }}>
-         {filtered.slice(0, 12).map(ch => (
+         {filtered.map(ch => (
 	   <ChannelCard
 	    key={ch.nanoid}
 	    channel={{
