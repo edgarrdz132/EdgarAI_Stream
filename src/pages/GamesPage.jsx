@@ -477,7 +477,7 @@ export default function GamesPage() {
                 /* Cover preview */
                 <div>
                   <div className="cover-panel" style={{ width: '30%', margin: '0 auto', aspectRatio: '3/4', border: `1px solid ${c}22`, background: '#0d0d12' }}>
-			 <img src={previewGame.cover} alt={previewGame.name}
+			 <img key={previewGame.name} src={previewGame.cover} alt={previewGame.name}
 				 style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block' }}
 				onError={e => { e.target.style.display = 'none' }} />
 				<div className="scanlines" />
