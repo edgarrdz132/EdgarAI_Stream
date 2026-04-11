@@ -104,7 +104,7 @@ const GAMES = {
     { name: 'Super Bomberman',             rom: `${R2}/snes/Super Bomberman (USA).zip`,                                                          cover: '' },
   ],
  neogeo: [
-    { name: 'Metal Slug',              rom: `${R2}/neogeo/mslug.zip`,    cover: '' },
+    { name: 'Metal Slug',              rom: `${R2}/neogeo/mslug.zip`,    cover: `${R2}/neogeo/covers/mslug.webp` },
     { name: 'Metal Slug 2',            rom: `${R2}/neogeo/mslug2.zip`,   cover: '' },
     { name: 'Metal Slug 3',            rom: `${R2}/neogeo/mslug3.zip`,   cover: '' },
     { name: 'Metal Slug X',            rom: `${R2}/neogeo/mslugx.zip`,   cover: '' },
