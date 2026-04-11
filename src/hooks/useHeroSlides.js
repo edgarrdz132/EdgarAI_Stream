@@ -4,10 +4,50 @@ import { getLiveChannels } from '@/services/famelack'
 
 const SLIDE_TYPES = [
   { type: 'SERIE',      badge: 'SERIE',      color: '#e50914' },
-  { type: 'PELÍCULA',   badge: 'ESTRENO',     color: '#f5a623' },
-  { type: 'ANIME',      badge: 'ANIME',       color: '#7c3aed' },
-  { type: 'CARICATURA', badge: 'CARICATURA',  color: '#0ea5e9' },
-  { type: 'CANAL',      badge: 'EN VIVO',     color: '#16a34a' },
+  { type: 'PELICULA',   badge: 'ESTRENO',    color: '#f5a623' },
+  { type: 'ANIME',      badge: 'ANIME',      color: '#7c3aed' },
+  { type: 'CARICATURA', badge: 'CARICATURA', color: '#0ea5e9' },
+  { type: 'JUEGO',      badge: 'RETRO',      color: '#f59e0b' },
+  { type: 'CANAL',      badge: 'EN VIVO',    color: '#16a34a' },
+]
+
+const RETRO_GAMES = [
+  {
+    title: 'Street Fighter II',
+    system: 'SNES',
+    description: 'El clásico de los juegos de pelea. Elige tu personaje y demuestra quién es el mejor luchador del mundo.',
+    backdrop: 'https://upload.wikimedia.org/wikipedia/en/5/58/Street_Fighter_II_box_art.jpg',
+  },
+  {
+    title: 'Super Mario Bros',
+    system: 'NES',
+    description: 'El fontanero más famoso del mundo en su aventura clásica para rescatar a la princesa.',
+    backdrop: 'https://upload.wikimedia.org/wikipedia/en/0/03/Super_Mario_Bros._box.png',
+  },
+  {
+    title: 'Metal Slug',
+    system: 'Neo Geo',
+    description: 'El run and gun más icónico de Neo Geo. Acción frenética y gráficos espectaculares.',
+    backdrop: 'https://upload.wikimedia.org/wikipedia/en/0/05/Metal_Slug_cover.png',
+  },
+  {
+    title: 'The Legend of Zelda',
+    system: 'NES',
+    description: 'Explora Hyrule, resuelve acertijos y salva a la princesa Zelda en esta aventura legendaria.',
+    backdrop: 'https://upload.wikimedia.org/wikipedia/en/4/41/Legend_of_zelda_cover_%28with_cartridge%29_gold.png',
+  },
+  {
+    title: 'Sonic the Hedgehog',
+    system: 'SNES',
+    description: 'El erizo más veloz del mundo en su aventura para derrotar al Doctor Eggman.',
+    backdrop: 'https://upload.wikimedia.org/wikipedia/en/d/d5/Sonic_the_Hedgehog_1_Genesis_box_art.jpg',
+  },
+  {
+    title: 'King of Fighters 98',
+    system: 'Neo Geo',
+    description: 'El torneo de peleas más épico de Neo Geo. Forma tu equipo y demuestra tu dominio.',
+    backdrop: 'https://upload.wikimedia.org/wikipedia/en/4/4c/Kof98_cover.jpg',
+  },
 ]
 
 function pickRandom(arr) {
@@ -27,7 +67,7 @@ export function useHeroSlides() {
       const results = []
 
       try {
-        // 1. SERIE — popular TV
+        // 1. SERIE
         const seriesData = await tmdbAPI.getPopularSeries()
         const seriesCandidates = (seriesData?.results || []).filter(s => s.backdrop_path)
         if (seriesCandidates.length > 0) {
@@ -42,13 +82,13 @@ export function useHeroSlides() {
           ))
         }
 
-        // 2. PELÍCULA — popular movies
+        // 2. PELICULA
         const moviesData = await tmdbAPI.getPopularMovies()
         const moviesCandidates = (moviesData?.results || []).filter(m => m.backdrop_path)
         if (moviesCandidates.length > 0) {
           const item = pickRandom(moviesCandidates)
           results.push(buildSlide(
-            'PELÍCULA',
+            'PELICULA',
             { ...item, type: 'movie' },
             IMG_ORI + item.backdrop_path,
             item.title || item.name,
@@ -57,7 +97,7 @@ export function useHeroSlides() {
           ))
         }
 
-        // 3. ANIME — genre 16 + japanese
+        // 3. ANIME
         const animeData = await tmdbAPI.getAnime()
         const animeCandidates = (animeData?.results || []).filter(a => a.backdrop_path)
         if (animeCandidates.length > 0) {
@@ -72,9 +112,8 @@ export function useHeroSlides() {
           ))
         }
 
-        // 4. CARICATURA — genre 16 animated
+        // 4. CARICATURA
         const cartoonData = await tmdbAPI.getCaricaturas()
-        // Excluir anime japonés del resultado de caricaturas
         const cartoonCandidates = (cartoonData?.results || []).filter(
           c => c.backdrop_path && c.original_language !== 'ja'
         )
@@ -90,7 +129,18 @@ export function useHeroSlides() {
           ))
         }
 
-        // 5. CANAL EN VIVO — famelack, solo si tiene logo
+        // 5. JUEGO RETRO
+        const game = pickRandom(RETRO_GAMES)
+        results.push(buildSlide(
+          'JUEGO',
+          game,
+          game.backdrop,
+          `${game.title} — ${game.system}`,
+          game.description,
+          { badge: game.system, badgeColor: '#f59e0b', isGame: true }
+        ))
+
+        // 6. CANAL EN VIVO
         try {
           const channels = await getLiveChannels('mx')
           const withLogo = (channels || []).filter(ch => ch.logo && ch.logo.trim() !== '')
@@ -99,14 +149,14 @@ export function useHeroSlides() {
             results.push(buildSlide(
               'CANAL',
               ch,
-              ch.logo, // usamos el logo como "imagen" del canal
+              ch.logo,
               ch.name,
-              `Canal en vivo disponible ahora mismo en EdgarAI Stream.`,
+              'Canal en vivo disponible ahora mismo en EdgarAI Stream.',
               { badge: 'EN VIVO', badgeColor: '#16a34a', isLive: true, logo: ch.logo }
             ))
           }
         } catch {
-          // Si falla canales, simplemente no se agrega ese slide
+          // Si falla canales, se omite ese slide
         }
 
       } catch (err) {
