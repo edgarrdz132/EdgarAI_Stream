@@ -143,7 +143,7 @@ const GAMES = {
     { name: 'Matrimelee',              rom: `${R2}/neogeo/matrim.zip`,   cover: '' },
     { name: 'Rise of the Dragons',     rom: `${R2}/neogeo/rotd.zip`,     cover: '' },
     { name: 'Ragnagard',               rom: `${R2}/neogeo/ragnagrd.zip`, cover: '' },
-    { name: 'Blazing Star',            rom: `${R2}/neogeo/blazstar.zip`, cover: '' },
+    { name: 'Spin Master', rom: `${R2}/neogeo/spinmast.zip`, cover: '' },
     { name: 'Pulstar',                 rom: `${R2}/neogeo/pulstar.zip`,  cover: '' },
     { name: 'Viewpoint',               rom: `${R2}/neogeo/viewpoin.zip`, cover: '' },
     { name: 'Galaxy Fight',            rom: `${R2}/neogeo/galaxyfg.zip`, cover: '' },
