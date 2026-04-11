@@ -2,15 +2,6 @@ import { useState, useEffect } from 'react'
 import { tmdbAPI, IMG_ORI } from '@/services/tmdb'
 import { getLiveChannels } from '@/services/famelack'
 
-const SLIDE_TYPES = [
-  { type: 'SERIE',      badge: 'SERIE',      color: '#e50914' },
-  { type: 'PELICULA',   badge: 'ESTRENO',    color: '#f5a623' },
-  { type: 'ANIME',      badge: 'ANIME',      color: '#7c3aed' },
-  { type: 'CARICATURA', badge: 'CARICATURA', color: '#0ea5e9' },
-  { type: 'JUEGO',      badge: 'RETRO',      color: '#f59e0b' },
-  { type: 'CANAL',      badge: 'EN VIVO',    color: '#16a34a' },
-]
-
 const RETRO_GAMES = [
   {
     title: 'Street Fighter II',
@@ -58,6 +49,21 @@ function buildSlide(type, item, backdrop, title, description, extra = {}) {
   return { type, backdrop, title, description, item, ...extra }
 }
 
+// Filtra títulos en caracteres latinos y con descripción válida
+function isLatinTitle(str) {
+  return /^[\x00-\x7F\u00C0-\u024F\s]+$/.test(str || '')
+}
+
+function isValidItem(item, nameField = 'name') {
+  const name = item[nameField] || item.title || item.name || ''
+  return (
+    item.backdrop_path &&
+    item.overview &&
+    item.overview.length > 20 &&
+    isLatinTitle(name)
+  )
+}
+
 export function useHeroSlides() {
   const [slides, setSlides] = useState([])
   const [loading, setLoading] = useState(true)
@@ -69,7 +75,7 @@ export function useHeroSlides() {
       try {
         // 1. SERIE
         const seriesData = await tmdbAPI.getPopularSeries()
-        const seriesCandidates = (seriesData?.results || []).filter(s => s.backdrop_path)
+        const seriesCandidates = (seriesData?.results || []).filter(s => isValidItem(s, 'name'))
         if (seriesCandidates.length > 0) {
           const item = pickRandom(seriesCandidates)
           results.push(buildSlide(
@@ -84,7 +90,7 @@ export function useHeroSlides() {
 
         // 2. PELICULA
         const moviesData = await tmdbAPI.getPopularMovies()
-        const moviesCandidates = (moviesData?.results || []).filter(m => m.backdrop_path)
+        const moviesCandidates = (moviesData?.results || []).filter(m => isValidItem(m, 'title'))
         if (moviesCandidates.length > 0) {
           const item = pickRandom(moviesCandidates)
           results.push(buildSlide(
@@ -99,7 +105,11 @@ export function useHeroSlides() {
 
         // 3. ANIME
         const animeData = await tmdbAPI.getAnime()
-        const animeCandidates = (animeData?.results || []).filter(a => a.backdrop_path)
+        const animeCandidates = (animeData?.results || []).filter(a =>
+          a.backdrop_path &&
+          a.overview &&
+          a.overview.length > 20
+        )
         if (animeCandidates.length > 0) {
           const item = pickRandom(animeCandidates)
           results.push(buildSlide(
@@ -114,8 +124,12 @@ export function useHeroSlides() {
 
         // 4. CARICATURA
         const cartoonData = await tmdbAPI.getCaricaturas()
-        const cartoonCandidates = (cartoonData?.results || []).filter(
-          c => c.backdrop_path && c.original_language !== 'ja'
+        const cartoonCandidates = (cartoonData?.results || []).filter(c =>
+          c.backdrop_path &&
+          c.overview &&
+          c.overview.length > 20 &&
+          c.original_language !== 'ja' &&
+          isLatinTitle(c.name || c.title || '')
         )
         if (cartoonCandidates.length > 0) {
           const item = pickRandom(cartoonCandidates)
