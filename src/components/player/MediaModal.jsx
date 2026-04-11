@@ -65,6 +65,7 @@ export default function MediaModal({ item, onClose }) {
             <iframe src={getEmbedUrl()} style={{ width: '100%', height: '100%', border: 'none', display: 'block' }}
               allow="autoplay; encrypted-media; fullscreen *; picture-in-picture"
               referrerPolicy="no-referrer"
+              sandbox="allow-scripts allow-same-origin allow-forms allow-presentation" 
             />
           ) : (
             <div style={{
