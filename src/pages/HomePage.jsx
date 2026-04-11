@@ -1,4 +1,4 @@
-kimport React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { tmdbAPI, IMG_ORI } from '@/services/tmdb'
 import { getLiveChannels } from '@/services/famelack'
